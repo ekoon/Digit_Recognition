@@ -6,18 +6,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
-import org.junit.Ignore;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * @author exk8925
  *
  */
-@RunWith(JUnit4.class)
-public class Test_Data {
 
+public class Test_Data {
 	@BeforeClass
 	public static void testSetup() {
 		//TODO form some connection with DB
@@ -36,9 +35,9 @@ public class Test_Data {
 	@Test
 	public void Test_Cases() {
 		DataParse tester = new DataParse();
-		String expected = "";
-		String actual = "";
-		org.junit.Assert.assertEquals("failure - DB recognized the wrong person", expected, actual);
+		for (int i=0; i<50; i++){
+			// might replace with regression testing within the junit framework
+		}
 	}
 
 }
