@@ -2,10 +2,14 @@
  * 
  */
 package vowel_detection;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
+<<<<<<< Updated upstream
+=======
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+>>>>>>> Stashed changes
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
