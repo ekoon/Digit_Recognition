@@ -29,18 +29,13 @@ public class Test_Data {
 		//TODO disconnect from DB
 		//TODO Create a report of all the test cases 
 	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testExceptionIsThrown() {
-		MyClass tester = new MyClass();
-	    tester.multiply(1000, 5);
-	}
 	  
 	/**
 	 * @param args
 	 */
 	@Test
 	public void Test_Cases() {
+		DataParse tester = new DataParse();
 		String expected = "";
 		String actual = "";
 		org.junit.Assert.assertEquals("failure - DB recognized the wrong person", expected, actual);
