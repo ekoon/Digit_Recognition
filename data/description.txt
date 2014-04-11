@@ -1,4 +1,4 @@
-ME: Vowel Recognition (Deterding data)
+NAME: Vowel Recognition (Deterding data)
 
 SUMMARY: Speaker independent recognition of the eleven steady state vowels
 of British English using a specified training set of lpc derived log area
@@ -314,4 +314,3 @@ However, it has not been the aim of this chapter to show that a particular
 type of node is necessarily `better' for error propagation networks than the
 weighted sum node, but that the error propagation algorithm can be applied
 successfully to many different types of node.
-
