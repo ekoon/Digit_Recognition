@@ -2,6 +2,7 @@
  * 
  */
 package vowel_detection;
+
 //https://github.com/junit-team/junit/wiki/Assertions
 //http://www.tutorialspoint.com/junit/junit_test_framework.htm
 import static org.junit.Assert.*;
@@ -17,6 +18,15 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.AfterClass;
 import org.junit.Test;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+
+
 import org.junit.Rule;
 import org.junit.rules.ErrorCollector;
 
