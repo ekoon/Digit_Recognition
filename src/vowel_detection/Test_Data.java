@@ -2,11 +2,24 @@
  * 
  */
 package vowel_detection;
+<<<<<<< HEAD
 //https://github.com/junit-team/junit/wiki/Assertions
 //http://www.tutorialspoint.com/junit/junit_test_framework.htm
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
+=======
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+<<<<<<< Updated upstream
+=======
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+>>>>>>> Stashed changes
+
+import org.junit.AfterClass;
+>>>>>>> 7efdda3a77a3f1f0e227be7ba87d5696eb94adc4
 import org.junit.BeforeClass;
 import org.junit.AfterClass;
 import org.junit.Test;
