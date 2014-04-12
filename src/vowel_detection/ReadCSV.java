@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class ReadCSV {
+	
 	public static float[][] obtainTestData(float[][] testData, int maxRow, int maxCol) 
 		throws IOException {
 			//TODO ADD location	 
@@ -13,28 +14,26 @@ public class ReadCSV {
 			BufferedReader br = null;
 			String line = "";
 			try {
-				
 				br = new BufferedReader(new FileReader(csvFile));
 				for (int row = 0; row < maxRow; row++){
-					for (int col = 0; col < maxCol; col++){
-						for(String ind: line.split(",")){
-						testData[row][col] = Float.parseFloat(ind);
+					String strgCol[] = line.split(",");
+					for (int col = 0; row < maxCol; col++){
+						float num = Float.parseFloat(strgCol[col]);
+						testData[row][col] = num;
+					}
+				}
+			}catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}finally {
+				if (br != null) {
+					try {
+						br.close();
+					}catch (IOException e) {
+						e.printStackTrace();
 					}
 				}
 			}
-		}catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				}catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		 
 		System.out.println("Test Data successfully read");
 		return testData;
-	}
+		}
 }

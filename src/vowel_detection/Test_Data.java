@@ -2,24 +2,18 @@
  * 
  */
 package vowel_detection;
-<<<<<<< HEAD
 //https://github.com/junit-team/junit/wiki/Assertions
 //http://www.tutorialspoint.com/junit/junit_test_framework.htm
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
-=======
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-<<<<<<< Updated upstream
-=======
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
->>>>>>> Stashed changes
 
 import org.junit.AfterClass;
->>>>>>> 7efdda3a77a3f1f0e227be7ba87d5696eb94adc4
 import org.junit.BeforeClass;
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -34,9 +28,9 @@ import org.junit.rules.ErrorCollector;
  */
 
 public class Test_Data {
-	static int maxCol = 14;
-	static int maxRow = 990;
-	static float[][] testData = new float[maxRow][maxCol];
+	static int maxCol = 14;		
+	static int maxRow = 990;	// Number of test data
+	static float[][] csvData = new float[maxRow][maxCol];
 
 	@Rule
 	 public ErrorCollector collector = new ErrorCollector();
@@ -46,9 +40,9 @@ public class Test_Data {
 		boolean connectDB = true;
 		//TODO form some connection with DB with boolean connectDB as a return		
 		assertTrue("Could not connect to the DB", connectDB); 
-		ReadCSV TestData = new ReadCSV();
+		ReadCSV Data = new ReadCSV();
 		try{
-		testData = TestData.obtainTestData(testData, maxRow, maxCol);
+		csvData = Data.obtainTestData(csvData, maxRow, maxCol);
 		}catch(Exception e){
 			System.out.printf("DB not working");
 			assertTrue("DB not working", false);
@@ -63,7 +57,7 @@ public class Test_Data {
 		boolean success;
 		for (int i=0; i<maxRow; i++){
 			DataParse tester = new DataParse();
-			success = tester.parseTestData(i, testData);			
+			success = tester.parseTestData(i, csvData);			
 			collector.checkThat(success, equalTo(true));
 			if ( success ){
 				System.out.printf("Test%d did not pass\n", i);
