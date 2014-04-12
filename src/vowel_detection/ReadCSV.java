@@ -10,7 +10,9 @@ public class ReadCSV {
 	public static float[][] obtainTestData(float[][] testData, int maxRow, int maxCol) 
 		throws IOException {
 			//TODO ADD location	 
-			String csvFile = "SOMELOCATION.csv";
+			final String dir = System.getProperty("user.dir");
+		    System.out.println("current dir = " + dir);  	
+			String csvFile = "\\data\\TESTING_DATA.csv";
 			BufferedReader br = null;
 			String line = "";
 			try {

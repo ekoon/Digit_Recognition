@@ -12,7 +12,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.AfterClass;
@@ -29,14 +28,14 @@ import org.junit.rules.ErrorCollector;
 
 public class Test_Data {
 	static int maxCol = 14;		
-	static int maxRow = 990;	// Number of test data
+	static int maxRow = 462;	// Number of test data
 	static float[][] csvData = new float[maxRow][maxCol];
 
 	@Rule
 	 public ErrorCollector collector = new ErrorCollector();
 	
 	@BeforeClass
-	public static void testSetup() {
+	public static void testSetup() {      
 		boolean connectDB = true;
 		//TODO form some connection with DB with boolean connectDB as a return		
 		assertTrue("Could not connect to the DB", connectDB); 
