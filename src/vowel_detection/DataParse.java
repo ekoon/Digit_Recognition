@@ -1,22 +1,28 @@
 package vowel_detection;
-import static org.junit.Assert.assertEquals;
 
+// testData format :TrainTest, SpeakerNum, Sex, F0, F1, F2, F3, F4, F5, F6, F7, F8, F9, Clas
 public class DataParse {
-	//TODO Select the next 50 test data and perform statistics on this (anther class)
-	// index from Junit framework
-	//TODO Parse out the expected name
-	//TODO Parse out the actual name calcuated
 	
-	public void parseTestData(int index){
-		
+	float expected;
+	float actual;
+	float[] currentData;
+	
+	public boolean parseTestData(int index, float[][] testData){
+		this.currentData = testData[index];
+		this.expected = testData[index][1]; // 1= SpeakerNum
+		SqlQuery(index);
+		return checkResults();
 	}
 	
-	private void performStatisics(int index){
-		
+	private void SqlQuery(int index){
+		//TODO Look up Table of Weights
+		//TODO Look up Table of Person's Statics that closest match
+		//TODO actual?
+		this.actual = (float) 0.123;
 	}
 	
-	private boolean checkResults(String expected, String actual){
-		if (expected == actual){
+	private boolean checkResults(){
+		if (this.expected == this.actual){
 			return true;
 		}else{
 			System.out.printf("Failed Epectecd:%s \t Actual:%s\n", expected, actual);

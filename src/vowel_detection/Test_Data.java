@@ -2,14 +2,18 @@
  * 
  */
 package vowel_detection;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+//https://github.com/junit-team/junit/wiki/Assertions
+//http://www.tutorialspoint.com/junit/junit_test_framework.htm
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 
-import org.junit.Test;
-
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.AfterClass;
 import org.junit.Test;
+import org.junit.Rule;
+import org.junit.rules.ErrorCollector;
+
+
 
 /**
  * @author exk8925
@@ -17,27 +21,49 @@ import org.junit.Test;
  */
 
 public class Test_Data {
+	static int maxCol = 14;
+	static int maxRow = 990;
+	static float[][] testData = new float[maxRow][maxCol];
+
+	@Rule
+	 public ErrorCollector collector = new ErrorCollector();
+	
 	@BeforeClass
 	public static void testSetup() {
-		//TODO form some connection with DB
-	}
-	
-	@AfterClass
-	public static void testCleanup() {
-		// Teardown for data used by the unit tests
-		//TODO disconnect from DB
-		//TODO Create a report of all the test cases 
+		boolean connectDB = true;
+		//TODO form some connection with DB with boolean connectDB as a return		
+		assertTrue("Could not connect to the DB", connectDB); 
+		ReadCSV TestData = new ReadCSV();
+		try{
+		testData = TestData.obtainTestData(testData, maxRow, maxCol);
+		}catch(Exception e){
+			System.out.printf("DB not working");
+			assertTrue("DB not working", false);
+		}
 	}
 	  
 	/**
 	 * @param args
 	 */
 	@Test
-	public void Test_Cases() {
-		DataParse tester = new DataParse();
-		for (int i=0; i<50; i++){
-			// might replace with regression testing within the junit framework
+	public void Test_Cases() {		
+		boolean success;
+		for (int i=0; i<maxRow; i++){
+			DataParse tester = new DataParse();
+			success = tester.parseTestData(i, testData);			
+			collector.checkThat(success, equalTo(true));
+			if ( success ){
+				System.out.printf("Test%d did not pass\n", i);
+			}
 		}
 	}
+	
+	@AfterClass
+	public static void testCleanup() {
+		// Teardown for data used by the unit tests
+		boolean disconnectDB = true;
+		//TODO disconnection from DB with boolean disconnectDB as a return		
+		assertTrue("Could not disconnect from DB", disconnectDB); 
+	}	
 
 }
