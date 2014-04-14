@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class Main {
 	
@@ -17,29 +16,24 @@ public class Main {
 	{
 		File data = new File ("data/vowel-context.data");
 		
-	    Map<String, Integer> persons = new HashMap<String, Integer>()  
-	    {  
-			private static final long serialVersionUID = -1458594260311538990L;
-
-			{  
-	            put ("Andrew", MALE); 
-	            put ("Bill"  , MALE);
-	            put ("David" , MALE);
-	            put ("Mark"  , MALE);
-	            put ("Jo"    , FEMALE);
-	            put ("Kate"  , FEMALE);
-	            put ("Penny" , FEMALE);
-	            put ("Rose"  , FEMALE);
-	            put ("Mike"  , MALE);
-	            put ("Nick"  , MALE);
-	            put ("Rich"  , MALE);
-	            put ("Tim"   , MALE);
-	            put ("Sarah" , FEMALE);
-	            put ("Sue"   , FEMALE);
-	            put ("Wendy" , FEMALE);
-	        }  
-	    };  
-		
+	    Speaker[] speakers = {
+	    	new Speaker ("Andrew"	, 0	, MALE),
+	    	new Speaker ("Bill"		, 1	, MALE),
+	    	new Speaker ("David"	, 2	, MALE),
+	    	new Speaker ("Mark"		, 3	, MALE),
+	    	new Speaker ("Jo"		, 4	, FEMALE),
+	    	new Speaker ("Kate"  	, 5	, FEMALE),
+	    	new Speaker ("Penny" 	, 6	, FEMALE),
+	    	new Speaker ("Rose"  	, 7	, FEMALE),
+	    	new Speaker ("Mike"  	, 8	, MALE),
+	    	new Speaker ("Nick"  	, 9	, MALE),
+	    	new Speaker ("Rich"  	, 10, MALE),
+	    	new Speaker ("Tim"   	, 11, MALE),
+	    	new Speaker ("Sarah" 	, 12, FEMALE),
+	    	new Speaker ("Sue"   	, 13, FEMALE),
+	    	new Speaker ("Wendy" 	, 14, FEMALE)
+	    };
+	    
 		
 		try
 		{
@@ -48,10 +42,9 @@ public class Main {
 			Database db   = new Database ("denis", "", "vowels");
 			
 			/* Populate Speakers */
-			for (Entry<String, Integer> person : persons.entrySet())
+			for (Speaker speaker : speakers)
 			try (Statement st = db.statement ())
 			{
-				Speaker speaker = new Speaker (person.getKey(), person.getValue());
 				speaker.save (st);
 				st.close ();
 				System.out.println ("Added " + speaker.first_name() + " to database");
@@ -63,18 +56,15 @@ public class Main {
 			
 			
 			/* Populate Features & Samples */
-			for (float[] buffer = new float[14]; parser.next(buffer);)
+			int i = 0;
+			for (float[] buffer = new float[14]; parser.next(buffer); i++)
+			try (Statement st = db.statement ())
 			{
-				Sample sample = new Sample (buffer);
-				
-				try (Statement st = db.statement ())
-				{
-					sample.save (st);
-				}
-				catch (SQLException e)
-				{ e.printStackTrace(); }
-				
+				Sample sample = new Sample (i, buffer);
+				sample.save (st);
 			}
+			catch (SQLException e)
+			{ e.printStackTrace(); }
 		}
 		catch (NumberFormatException | IOException e)
 		{ e.printStackTrace(); }
