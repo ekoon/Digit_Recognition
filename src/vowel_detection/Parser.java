@@ -23,7 +23,7 @@ public class Parser {
 		if ((line = bufreader_.readLine()) == null)
 			return false;
 		
-		if ((columns = line.split(",")) == null)
+		if ((columns = line.split("[ ,]+")) == null)
 			return false;
 
 		for (int i = 0; i < columns.length; i++)
