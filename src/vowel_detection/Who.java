@@ -31,11 +31,27 @@ public class Who {
 		return speakers[index];
 	}
 	
+	public Speaker IndexSpeakers(float index){				
+		return speakers[convertFloatToInt(index)];
+	}
+	
 	public String SpeakersName(int index){					
 		return speakers[index].first_name();
 	}
 	
+	public String SpeakersName(float index){					
+		return speakers[convertFloatToInt(index)].first_name();
+	}
+	
 	public String SpeakersSex(int index){					
 		return speakers[index].sexString();
+	}
+	
+	public String SpeakersSex(float index){					
+		return speakers[convertFloatToInt(index)].sexString();
+	}
+	
+	private int convertFloatToInt(float temp){		
+		return Math.round((int)temp);		
 	}
 }
