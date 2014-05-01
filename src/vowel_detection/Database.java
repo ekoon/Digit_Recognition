@@ -36,6 +36,10 @@ public class Database {
             System.err.println("Connection: null");
     }
     
+    public boolean work(){
+    	return _connection != null;
+    }
+    
     public Statement statement () throws SQLException
     {
         return _connection.createStatement();

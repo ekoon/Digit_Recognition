@@ -35,7 +35,7 @@ public class ReadCSV {
 					}
 				}
 			}
-		System.out.println("Test Data successfully read");
+		System.out.println("Successfully read CSV file");
 		return testData;
 		}
 }
