@@ -62,14 +62,24 @@ public class Test_Data {
 	@Test
 	public void Test_Cases() {		
 		boolean success;
+		
+		int passed = 0;
+		
 		for (int i=0; i<maxRow; i++){
 			ValidateWDb tester = new ValidateWDb();
-			success = tester.getSample(db);			
+			success = tester.getSample(db);	
 			collector.checkThat(success, equalTo(true));
+			
+			passed += (success) ? 1 : 0;
+			
 			if ( !success ){
 				System.out.printf("Test%d did not pass\n", i);
 			}
 		}
+		System.out.println ("PREDICTION TEST RESULTS");
+		System.out.println ("-----------------------");
+		System.out.println ("Tests : " + maxRow);
+		System.out.println ("Passed: " + (passed * 100)/(maxRow * 1.0) + "%");
 	}
 	
 	@AfterClass
