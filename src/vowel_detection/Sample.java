@@ -1,10 +1,18 @@
 package vowel_detection;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 public class Sample {
     
+	private final static int CSV_FEATURE_OFFSET = 3;
+	
     private boolean _train    = false;
     private int     _speaker  = -1;
     private int     _sex      = -1;
@@ -113,5 +121,136 @@ public class Sample {
                        +")"
             );
         }
+    }
+    
+    public static int getEstimateSpeakerId (Database db, float[] row)
+    {
+    	double[] scores = new double[14];
+    	
+    	
+    	for (int i = 0; i < 10; i++)
+    	{
+    		try (Statement st = db.statement())
+    		{
+    			double[] results = getNearest (st, i, row[i+CSV_FEATURE_OFFSET], 5);
+    			
+    			for (int k = 0; k < results.length; k++)
+    			{
+    				scores[k] += results[k] * (1/10.0); // equal weighting of all features
+    			}
+
+    		}
+    		catch (SQLException e)
+    		{ e.printStackTrace(); }
+    	}
+    	
+
+    	
+    	/* Find highest ranking speaker */
+    	double min  = Double.MAX_VALUE;
+    	int speaker = -1;
+    	for (int i = 0; i < scores.length; i++)
+    	{
+    		if (scores[i] < min)
+    		{
+    			min = scores[i];
+    			speaker = i;
+    		}
+    	}
+    	
+    	return speaker;
+    }
+    
+    public static double[] getNearest (Statement st, int feature, float target, int k_neighbors) throws SQLException
+    {
+    	double[] scores = new double[14];
+    	
+    	for (int i = 0; i < scores.length; i++)
+    		scores[i] = -1.0;
+    	
+    	ResultSet rset = null;
+    	/*
+    	 
+    	SELECT * FROM
+		(
+		    SELECT * FROM
+		    (
+		        SELECT * FROM Feature AS F
+		        WHERE F.feature = $FEATURE ID AND F.number > $TARGET
+		        ORDER BY F.number ASC
+		        LIMIT 5
+		    ) AS upper_half
+		
+		    UNION ALL
+		
+		    SELECT * FROM
+		    (
+		        SELECT * FROM Feature AS F
+		        WHERE F.feature = $FEATURE ID AND F.number < $TARGET
+		        ORDER BY F.number DESC
+		        LIMIT 5
+		    ) AS lower_half
+		
+		    UNION ALL
+		
+		    SELECT * FROM
+		    (
+		        SELECT * FROM Feature AS F
+		        WHERE F.feature = $FEATURE ID AND F.number = $TARGET
+		        ORDER BY F.number DESC
+		        LIMIT 5
+		    ) AS matches
+		
+		) AS resultset
+		
+		ORDER BY ABS(number - $TARGET) ASC, number DESC
+    	 */
+  
+    	rset = st.executeQuery ("SELECT *, ABS(number - " + target + ") AS distance FROM"
+    						+	"("
+    						+		"SELECT * FROM"
+    						+		"("
+    						+			"SELECT * FROM Feature"		 								+ " "
+    						+			"WHERE feature = " + feature + " AND number > " + target	+ " "
+    						+			"ORDER BY number ASC"										+ " "
+    						+			"LIMIT " + (k_neighbors / 2)
+    						+		") AS upper_half"												+ " "
+    						
+    						+		"UNION ALL"														+ " "
+    						
+    						+		"SELECT * FROM"
+    						+		"("
+    						+			"SELECT * FROM Feature"		 								+ " "
+    						+			"WHERE feature = " + feature + " AND number < " + target	+ " "
+    						+			"ORDER BY number DESC"										+ " "
+    						+			"LIMIT " + (k_neighbors / 2)
+    						+		") AS lower_half"												+ " "
+    						
+    						+		"UNION ALL"														+ " "
+    						
+    						+		"SELECT * FROM"
+    						+		"("
+    						+			"SELECT * FROM Feature"		 								+ " "
+    						+			"WHERE feature = " + feature + " AND number = " + target	+ " "
+    						+		") AS matches"													+ " "
+    						+	") AS resultset"													+ " "
+    						+	"LEFT JOIN Sample AS S"												+ " "
+    						+	"ON S.id = sample"													+ " "
+    						+ 	"WHERE S.train = false"												+ " "
+    						+ 	"ORDER BY ABS(number - " + target + ") ASC, number DESC"
+    						
+    	);
+    	
+    	while (rset.next())
+    	{
+    		int    speaker  = rset.getInt ("speaker");
+    		double value    = rset.getDouble("distance");
+    		
+    		//System.out.println ("rset(" + feature + "," + speaker + ") = " + value);
+
+    		scores[speaker] = value;
+    	}
+    	
+    	return scores;
     }
 }

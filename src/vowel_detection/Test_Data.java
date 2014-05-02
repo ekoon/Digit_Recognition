@@ -11,10 +11,10 @@ import static org.hamcrest.CoreMatchers.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import org.junit.Rule;
 import org.junit.rules.ErrorCollector;
 
+import java.io.File;
 import java.sql.SQLException;
 
 /**
@@ -24,7 +24,7 @@ import java.sql.SQLException;
 
 public class Test_Data {
 	static int maxCol = 14;		
-	static int maxRow = 2;//462;	// Number of test data
+	static int maxRow = 462;	// Number of test data
 	static float[][] csvData = new float[maxRow][maxCol];
 	static Database db;
 	
@@ -43,13 +43,17 @@ public class Test_Data {
     	   
 		
 		// Read CSV File for test samples
-		ReadCSV Data = new ReadCSV();
-		try{
-			csvData = Data.obtainTestData(csvData, maxRow, maxCol);
-		}catch(Exception e){
-			System.out.printf("Test Data fail reading CSV file");
-			assertTrue("Test Data fail reading CSV file", false);
-		}
+//		ReadCSV Data = new ReadCSV();
+//		
+//
+//		
+//		try{
+//			csvData = Data.obtainTestData(csvData, maxRow, maxCol);
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			System.out.printf("Test Data fail reading CSV file");
+//			assertTrue("Test Data fail reading CSV file", false);
+//		}
 	}
 	  
 	/**
@@ -60,9 +64,9 @@ public class Test_Data {
 		boolean success;
 		for (int i=0; i<maxRow; i++){
 			ValidateWDb tester = new ValidateWDb();
-			success = tester.getSample(i, csvData);			
+			success = tester.getSample(db);			
 			collector.checkThat(success, equalTo(true));
-			if ( success ){
+			if ( !success ){
 				System.out.printf("Test%d did not pass\n", i);
 			}
 		}

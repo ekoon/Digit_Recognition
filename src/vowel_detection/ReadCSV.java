@@ -12,7 +12,7 @@ public class ReadCSV {
 			//TODO ADD location	 
 			final String dir = System.getProperty("user.dir");
 		    System.out.println("current dir = " + dir);  	
-			String csvFile = "\\data\\TESTING_DATA.csv";
+			String csvFile = "data/TESTING_DATA.csv";
 			BufferedReader br = null;
 			String line = "";
 			try {

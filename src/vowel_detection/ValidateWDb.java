@@ -1,39 +1,40 @@
 package vowel_detection;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 // testData format :TrainTest, SpeakerNum, Sex, F0, F1, F2, F3, F4, F5, F6, F7, F8, F9, Clas
 public class ValidateWDb {
 	
-	float expected;
-	float actual;
+	int expected;
+	int actual;
 	float[] currentData;
 	int index;
+	Parser parser = null;
+	float[] buffer = new float[14];
 	
-	public boolean getSample(int index, float[][] testData){
-		this.currentData = testData[index];
-		this.expected = testData[index][1]; // 1= SpeakerNum
-		SqlQuery();
-		return checkResults();
-	}	
+	public ValidateWDb ()
+	{
+		try {
+			parser = new Parser (new File("data/TESTING_DATA.csv"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
-private void SqlQuery(){
-		//use currentData for finding best results
+	public boolean getSample(Database db){
 		
-		//TODO Look up Table of Weights
-		//TODO Look up Table of Person's Statics that closest match
-
-		//TODO store results from DB into actual
-		//temp solution
-		this.actual = (float) 1;
-	}
-	
-	private boolean checkResults(){
-		if (this.expected == this.actual){
-			return true;
-		}else{
-			Who speakers = new Who();
-			System.out.printf("Failed Epectecd:%s \t Actual:%s\n", 
-					speakers.SpeakersName(this.expected), //expected 
-					speakers.SpeakersName(this.actual)); //actual
-			return false;}
-	}
+		try {
+			parser.next(buffer);
+		} catch (NumberFormatException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		this.expected = Math.round(buffer[1]); // 1= SpeakerNum
+		this.actual   = Math.round(Sample.getEstimateSpeakerId(db, buffer));
+		
+		return (this.expected == this.actual);
+	}	
 }
